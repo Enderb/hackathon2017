@@ -35,29 +35,32 @@ going = True
 
 while going:
 
-    events = event_get()
+    events = i.read(6)
 
     for e in events:
 
-        if e.type in [pgl.QUIT, pgl.KEYDOWN]:
+	#add something to ignore type 248 e[0][0]
 
-            going = False
+	data = e[0]
+	timestamp = e[1]
 
-            continue
+	type = data[0]
+	pitch = data[1]
+	volume = data[2]
 
-        if e.type == pygame.midi.MIDIIN:
+        if type == 144:
 
-            if e.status == 144: #keydown
+            if timestamp != 0: #keydown
 
-                keys[e.data1] = e.timestamp
+                keys[type] = timestamp
 
-                print "Key %s was pressed." % e.data1
+                print "Key %s was pressed." % pitch
 
                 sys.stdout.flush()
 
-            elif e.status == 128: #keyup
+            elif timestamp == 0: #keyup
 
-                print "Key %s was held down for %s." % (e.data1, e.timestamp - keys[e.data1])
+                print "Key %s was held down for %s." % (pitch, timestamp - keys[type])
 
                 sys.stdout.flush()
 
@@ -81,11 +84,12 @@ while going:
 
         for m_e in midi_evs:
 
-            print m_e
+		if m_e.status != 248:
+			print m_e
 
-            sys.stdout.flush()
+            	sys.stdout.flush()
 
-            event_post( m_e )
+            	event_post( m_e )
 
     
 
