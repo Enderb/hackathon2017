@@ -50,7 +50,7 @@ while going:
 
         if type == 144:
 
-            if timestamp != 0: #keydown
+            if volume != 0: #keydown
 
                 keys[type] = timestamp
 
@@ -58,7 +58,7 @@ while going:
 
                 sys.stdout.flush()
 
-            elif timestamp == 0: #keyup
+            elif volume == 0: #keyup
 
                 print "Key %s was held down for %s." % (pitch, timestamp - keys[type])
 
