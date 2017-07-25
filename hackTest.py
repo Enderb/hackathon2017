@@ -1,4 +1,5 @@
 import pygame.midi
+import sys
 from midiutil import MIDIFile
 
 def readInput(input_device):
