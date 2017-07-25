@@ -13,9 +13,9 @@ def readInput(input_device):
     time = 0
     tempo = 120
 	
-    beatLength = 500 #At 120 BPM, 2 beats play per second, or, 1 beat takes 500 milliseconds 
+    beatLength = 500 * 1.0 #At 120 BPM, 2 beats play per second, or, 1 beat takes 500 milliseconds 
 
-    MyMIDI = MIDIFile(1)
+    MyMIDI = MIDIFile(1, adjust_origin="True")
     MyMIDI.addTempo(track, time, tempo)
 
     while C:
@@ -54,8 +54,16 @@ def readInput(input_device):
 					print "Key %s was held down for %s" % (pitch, timestamp - keys[pitch])
 					duration = timestamp - keys[pitch]
 					
-					MyMIDI.addNote(track, channel, pitch, keys[pitch]/beatLength, duration/beatLength, volumes[pitch])
-					print "Added note %s duration %s and volume %s" % (pitch, duration/beatLength, volumes[pitch])
+					timeInBeats = keys[pitch]/beatLength
+					print("Timestamp")
+					print(keys[pitch])
+					print(timeInBeats)
+					durationInBeats = duration/beatLength
+					print("Duration")
+					print(duration)
+					print(durationInBeats)
+					MyMIDI.addNote(track, channel, pitch, timeInBeats, duration, volumes[pitch])
+					print "Added note %s duration %.6f and volume %s at time %.2f" % (pitch, durationInBeats, volumes[pitch], timeInBeats)
 					
 					sys.stdout.flush()
 				
