@@ -8,7 +8,7 @@ def readInput(input_device):
     keys = {}
 
     track = 0
-    channel = 0
+    channel = 1
     time = 0
     tempo = 120
 
@@ -56,11 +56,8 @@ def readInput(input_device):
 					sys.stdout.flush()
 				
     with open("test.midi", "wb") as output_file:
-
         MyMIDI.writeFile(output_file)    
-
     
-    	
 
 if __name__ == '__main__':
 	pygame.midi.init()
