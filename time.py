@@ -64,32 +64,7 @@ while going:
 
                 sys.stdout.flush()
 
-             
-
-            #print (e), ', miditime: ', mt
-
-   
-
-    
-
-    if i.poll():
-
-        midi_events = i.read(10)
-
-        # convert them into pygame events.
-
-        midi_evs = pygame.midi.midis2events(midi_events, i.device_id)
-
-
-
-        for m_e in midi_evs:
-
-		if m_e.status != 248:
-			print m_e
-
-            	sys.stdout.flush()
-
-            	event_post( m_e )
+  
 
     
 
