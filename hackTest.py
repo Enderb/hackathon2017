@@ -45,7 +45,7 @@ def readInput(input_device):
 				    elif volume == 0: #Key Up
 					print "Key %s was held down for %s" % (pitch, timestamp - keys[type])
 					duration = timestamp - keys[type]
-					MyMIDI.addNote(track, channel, pitch, duration, volume)
+					MyMIDI.addNote(track, channel, pitch, duration, volume, "")
 					
 					
 					sys.stdout.flush()
