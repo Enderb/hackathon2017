@@ -12,32 +12,32 @@ def readInput(input_device):
 			events = input_device.read(6)
 
 			for event in events:
-                if type != 248:
-                    data = event[0]
-                    timestamp = event[1]
-                    #Notes will have type = 144
-                    #Sustain will have type = 176
-                    type = data[0]
-                    pitch = data[1]
-                    velocity = data[2]
+				if event[0][0] != 248:
+				    data = event[0]
+				    timestamp = event[1]
+				    #Notes will have type = 144
+				    #Sustain will have type = 176
+				    type = data[0]
+				    pitch = data[1]
+				    velocity = data[2]
 
-                    print(event)
+				    print(event)
 
-                    if volume != 0: #Key Down
-                        keys[type] = timestamp
+				    if volume != 0: #Key Down
+					keys[type] = timestamp
 
-                        print "Key %s was pressed" % pitch
+					print "Key %s was pressed" % pitch
 
-                        sys.stdout.flush()
+					sys.stdout.flush()
 
-                    elif volume == 0: #Key Up
-                        print "Key %s was held down for %s" % (pitch, timestamp - keys[type])
+				    elif volume == 0: #Key Up
+					print "Key %s was held down for %s" % (pitch, timestamp - keys[type])
 
-                        sys.stdout.flush()
+					sys.stdout.flush()
 
-                    #exit if Grand Piano button is pressed
-                    if pitch == 72 and type == 176:
-                        C = False
+				    #exit if Grand Piano button is pressed
+				    if pitch == 72 and type == 176:
+					C = False
 				
 
 
