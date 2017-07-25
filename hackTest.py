@@ -19,7 +19,7 @@ def readInput(input_device):
 				    #Sustain will have type = 176
 				    type = data[0]
 				    pitch = data[1]
-				    velocity = data[2]
+				    volume = data[2]
 
 				    print(event)
 
