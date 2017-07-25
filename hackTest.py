@@ -1,7 +1,4 @@
 import pygame.midi
-from bootstrap import *
-from random import randint, shuffle
-
 
 def readInput(input_device):
 	C = True
