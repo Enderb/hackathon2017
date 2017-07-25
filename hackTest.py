@@ -1,7 +1,7 @@
 import pygame.midi
 
 def readInput(input_device):
-	C = True
+    C = True
 	
     keys = {}
     
