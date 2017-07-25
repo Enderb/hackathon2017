@@ -2,27 +2,42 @@ import pygame.midi
 
 def readInput(input_device):
 	C = True
-	while C:
+	
+    keys = {}
+    
+    while C:
 		
 		if input_device.poll():
 			#print("polled")
 			events = input_device.read(6)
 
 			for event in events:
-				data = event[0]
-				timestamp = event[1]
-				#Notes will have type = 144
-				#Sustain will have type = 176
-				type = data[0]
-				note_number = data[1]
-				velocity = data[2]
+                if type != 248:
+                    data = event[0]
+                    timestamp = event[1]
+                    #Notes will have type = 144
+                    #Sustain will have type = 176
+                    type = data[0]
+                    pitch = data[1]
+                    velocity = data[2]
 
-				if type != 248:
-					print(event)			
+                    print(event)
 
-				#exit if Grand Piano button is pressed
-				if note_number == 72 and type == 176:
-					C = False
+                    if volume != 0: #Key Down
+                        keys[type] = timestamp
+
+                        print "Key %s was pressed" % pitch
+
+                        sys.stdout.flush()
+
+                    elif volume == 0: #Key Up
+                        print "Key %s was held down for %s" % (pitch, timestamp - keys[type])
+
+                        sys.stdout.flush()
+
+                    #exit if Grand Piano button is pressed
+                    if pitch == 72 and type == 176:
+                        C = False
 				
 
 
