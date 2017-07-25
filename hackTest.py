@@ -1,10 +1,19 @@
 import pygame.midi
+from midiutil import MIDIFile
 
 def readInput(input_device):
     C = True
 	
     keys = {}
-    
+
+    track = 0
+    channel = 0
+    time = 0
+    tempo = 120
+
+    MyMIDIk = MIDIFile(1)
+    MyMIDI.addTempo(track, time, tempo)
+
     while C:
 		
 		if input_device.poll():
@@ -21,6 +30,8 @@ def readInput(input_device):
 				    pitch = data[1]
 				    volume = data[2]
 
+				    duration = 0
+
 				    print(event)
 
 				    if volume != 0: #Key Down
@@ -32,14 +43,22 @@ def readInput(input_device):
 
 				    elif volume == 0: #Key Up
 					print "Key %s was held down for %s" % (pitch, timestamp - keys[type])
-
+					duration = timestamp - keys[type]
+					MyMIDI.addNote(track, channel, pitch, duration, volume)
+					
+					
 					sys.stdout.flush()
 
 				    #exit if Grand Piano button is pressed
 				    if pitch == 72 and type == 176:
 					C = False
 				
+    with open("test.midi", "wb") as output_file:
 
+        MyMIDI.writeFile(output_file)    
+
+    
+    	
 
 if __name__ == '__main__':
 	pygame.midi.init()
