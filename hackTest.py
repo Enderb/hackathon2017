@@ -11,7 +11,7 @@ def readInput(input_device):
     time = 0
     tempo = 120
 
-    MyMIDIk = MIDIFile(1)
+    MyMIDI = MIDIFile(1)
     MyMIDI.addTempo(track, time, tempo)
 
     while C:
