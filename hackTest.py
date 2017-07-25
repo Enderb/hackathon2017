@@ -24,10 +24,6 @@ def readInput(input_device):
 			for event in events:
 				if event[0][0] != 248:
 					
-				    #exit if Grand Piano button is pressed
-				    if pitch == 72 and type == 176:
-					C = False
-					
 				    data = event[0]
 				    timestamp = event[1]
 				    #Notes will have type = 144
@@ -38,6 +34,10 @@ def readInput(input_device):
 
 				    duration = 0
 
+				    #exit if Grand Piano button is pressed
+				    if pitch == 72 and type == 176:
+					C = False					
+					
 				    print(event)
 
 				    if volume != 0: #Key Down
