@@ -83,7 +83,7 @@ def readInput(input_device):
 					durationInBeats = duration/beatLength
 
 					MyMIDI.addNote(track, channel, pitch, timeInBeats, durationInBeats, volumes.get(pitch,0))
-					print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes[pitch], timeInBeats)
+					print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes.get(pitch, 0), timeInBeats)
 					
 					sys.stdout.flush()
     str = str[:-1]
