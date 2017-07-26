@@ -68,7 +68,7 @@ def readInput(input_device):
 					
 					sys.stdout.flush()
 
-    timeOffset = tempOffset
+    global timeOffset = tempOffset
 					
     timestr = time.strftime("%Y%m%d-%H%M%S")
     fileName = timestr + ".mid"
