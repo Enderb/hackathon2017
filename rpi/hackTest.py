@@ -71,7 +71,7 @@ def readInput(input_device):
         MyMIDI.writeFile(output_file)
 	
     block_blob_service = BlockBlobService(account_name='mlpiano', account_key='AWsiStetr34ycMVEFkOznT3iORrmYA5P4cod5RkPMgh7VwW+GGktohnuwXqj/xccnSp71mWg4FViyGnB9/AUUg==')    	
-    block_blob_service.create_blob_from_path('midiuploadrpi', 'testMidi', fileName) 
+    block_blob_service.create_blob_from_path('midiuploadrpi', fileName, fileName) 
     del MyMIDI
     readInput(input_device)
 
