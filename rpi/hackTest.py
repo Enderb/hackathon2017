@@ -85,7 +85,8 @@ def readInput(input_device):
     str += ']}]}'
 
     with open('initiator.json', 'w') as outfile:
-        json.dumps(str, separators=(',',': '), indent=4)
+        outfile.write(str)
+
     timeOffset = tempOffset
 					
     with open(fileName, "wb") as output_file:
