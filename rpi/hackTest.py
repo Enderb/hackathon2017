@@ -3,6 +3,7 @@ import pygame.midi
 import sys
 from midiutil import MIDIFile
 import time
+import json
 
 timeOffset = 0
 
@@ -18,6 +19,13 @@ def readInput(input_device):
     channel = 0
     tim = 0
     tempo = 120
+	
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    fileName = timestr + ".mid"
+	
+    str = '{initiator":[{"name":"'
+    str += timestr
+    str += '","seq":['
 
     tempOffset = 0
 	
@@ -56,7 +64,11 @@ def readInput(input_device):
 					keys[pitch] = timestamp
 					volumes[pitch] = volume
 					print "Key %s was pressed" % pitch
-
+					
+					str += '{"notes":['
+					str += `pitch`
+					str += ']},'
+					
 					sys.stdout.flush()
 
 				    elif volume == 0: #Key Up
@@ -69,11 +81,11 @@ def readInput(input_device):
 					print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes[pitch], timeInBeats)
 					
 					sys.stdout.flush()
+    str = str[:-1]
+    str += ']}]}'
 
+    print json.dumps(str, separators=',',': '), indent=4)
     timeOffset = tempOffset
-					
-    timestr = time.strftime("%Y%m%d-%H%M%S")
-    fileName = timestr + ".mid"
 					
     with open(fileName, "wb") as output_file:
         MyMIDI.writeFile(output_file)
