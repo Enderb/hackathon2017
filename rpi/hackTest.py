@@ -28,7 +28,7 @@ def readInput(input_device):
     fileName = timestr + ".mid"
     jsonFile = 'initiator.json.' + timestr
 	
-    str = '{initiator":[{"name":"'
+    str = '{"initiator":[{"name":"'
     str += timestr
     str += '","seq":['
 
