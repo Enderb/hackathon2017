@@ -8,6 +8,8 @@ timeOffset = 0
 
 def readInput(input_device):
     C = True
+
+    global timeOffset
 	
     keys = {}
     volumes = {}
@@ -68,7 +70,7 @@ def readInput(input_device):
 					
 					sys.stdout.flush()
 
-    global timeOffset = tempOffset
+    timeOffset = tempOffset
 					
     timestr = time.strftime("%Y%m%d-%H%M%S")
     fileName = timestr + ".mid"
