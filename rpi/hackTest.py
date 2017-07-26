@@ -4,6 +4,8 @@ import sys
 from midiutil import MIDIFile
 import time
 
+timeOffset = 0
+
 def readInput(input_device):
     C = True
 	
@@ -14,6 +16,8 @@ def readInput(input_device):
     channel = 0
     tim = 0
     tempo = 120
+
+    tempOffset = 0
 	
     beatLength = 500 * 1.0 #At 120 BPM, 2 beats play per second, or, 1 beat takes 500 milliseconds 
 
@@ -30,7 +34,8 @@ def readInput(input_device):
 				if event[0][0] != 248:
 					
 				    data = event[0]
-				    timestamp = event[1]
+				    timestamp = event[1] - timeOffset
+				    tempOffset = timestamp
 				    #Notes will have type = 144
 				    #Sustain will have type = 176
 				    type = data[0]
@@ -63,7 +68,8 @@ def readInput(input_device):
 					
 					sys.stdout.flush()
 
-
+    timeOffset = tempOffset
+					
     timestr = time.strftime("%Y%m%d-%H%M%S")
     fileName = timestr + ".mid"
 					
