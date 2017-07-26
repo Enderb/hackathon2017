@@ -38,54 +38,57 @@ def readInput(input_device):
 
     MyMIDI = MIDIFile(1, adjust_origin="True")
     MyMIDI.addTempo(track, tim, tempo)
+    
+    try:
+	    while C:
 
-    while C:
-		
-		if input_device.poll():
-			#print("polled")
-			events = input_device.read(6)
+			if input_device.poll():
+				#print("polled")
+				events = input_device.read(6)
 
-			for event in events:
-				if event[0][0] == 144:
-					
-				    data = event[0]
-				    timestamp = event[1] - timeOffset
-				    tempOffset = timestamp
-				    #Notes will have type = 144
-				    #Sustain will have type = 176
-				    type = data[0]
-				    pitch = data[1]
-				    volume = data[2]
+				for event in events:
+					if event[0][0] == 144:
 
-				    duration = 0
-					
-				    print(event)
+					    data = event[0]
+					    timestamp = event[1] - timeOffset
+					    tempOffset = timestamp
+					    #Notes will have type = 144
+					    #Sustain will have type = 176
+					    type = data[0]
+					    pitch = data[1]
+					    volume = data[2]
 
-				    if volume != 0: #Key Down
-					keys[pitch] = timestamp
-					volumes[pitch] = volume
-					print "Key %s was pressed" % pitch
-					
-					str += '{"notes":['
-					str += `pitch`
-					str += ']},'
-					
-					sys.stdout.flush()
+					    duration = 0
 
-				    elif volume == 0: #Key Up
-					duration = timestamp - keys.get(pitch, (timestamp-10))
-					
-					timeInBeats = keys.get(pitch, (timestamp-10))/beatLength
-					durationInBeats = duration/beatLength
+					    print(event)
 
-					MyMIDI.addNote(track, channel, pitch, timeInBeats, durationInBeats, volumes.get(pitch,0))
-					print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes.get(pitch, 0), timeInBeats)
-					
-					sys.stdout.flush()
-				#exit if Grand Piano button is pressed
-				if event[0][1] == 72 and event[0][0] == 176:
-					C = False					
-   
+					    if volume != 0: #Key Down
+						keys[pitch] = timestamp
+						volumes[pitch] = volume
+						print "Key %s was pressed" % pitch
+
+						str += '{"notes":['
+						str += `pitch`
+						str += ']},'
+
+						sys.stdout.flush()
+
+					    elif volume == 0: #Key Up
+						duration = timestamp - keys.get(pitch, (timestamp-10))
+
+						timeInBeats = keys.get(pitch, (timestamp-10))/beatLength
+						durationInBeats = duration/beatLength
+
+						MyMIDI.addNote(track, channel, pitch, timeInBeats, durationInBeats, volumes.get(pitch,0))
+						print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes.get(pitch, 0), timeInBeats)
+
+						sys.stdout.flush()
+					#exit if Grand Piano button is pressed
+					if event[0][1] == 72 and event[0][0] == 176:
+						C = False					
+
+    except KeyboardInterrupt:
+	return
 
     str = str[:-1]
     str += ']}]}'
