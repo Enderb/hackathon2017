@@ -4,6 +4,9 @@ import sys
 from midiutil import MIDIFile
 import time
 import json
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.SNIMissingWarning, urllib3.exceptions.InsecurePlatformWarning) 
 
 timeOffset = 0
 
