@@ -58,10 +58,6 @@ def readInput(input_device):
 				    volume = data[2]
 
 				    duration = 0
-
-				    #exit if Grand Piano button is pressed
-				    if pitch == 72 and type == 176:
-					C = False					
 					
 				    print(event)
 
@@ -86,6 +82,11 @@ def readInput(input_device):
 					print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes.get(pitch, 0), timeInBeats)
 					
 					sys.stdout.flush()
+				#exit if Grand Piano button is pressed
+				if event[0][1] == 72 and event[0][0] == 176:
+					C = False					
+   
+
     str = str[:-1]
     str += ']}]}'
 
@@ -107,6 +108,8 @@ def readInput(input_device):
     block_blob_service.create_container('jsonuploadrpi')
     block_blob_service.create_blob_from_path('jsonuploadrpi', jsonFile, jsonFile)
 
+    print("Json and MIDI files uploaded")
+    print("next")
 
     readInput(input_device)
 
