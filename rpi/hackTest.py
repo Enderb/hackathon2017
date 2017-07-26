@@ -77,9 +77,9 @@ def readInput(input_device):
 					sys.stdout.flush()
 
 				    elif volume == 0: #Key Up
-					duration = timestamp - keys[pitch]
+					duration = timestamp - keys.get(pitch, (timestamp-10))
 					
-					timeInBeats = keys[pitch]/beatLength
+					timeInBeats = keys.get(pitch, (timestamp-10))/beatLength
 					durationInBeats = duration/beatLength
 
 					MyMIDI.addNote(track, channel, pitch, timeInBeats, durationInBeats, volumes[pitch])
@@ -96,6 +96,10 @@ def readInput(input_device):
 					
     with open(fileName, "wb") as output_file:
         MyMIDI.writeFile(output_file)
+
+    del keys
+    del volumes
+    del MyMIDI
 	
     block_blob_service = BlockBlobService(account_name='mlpiano', account_key='AWsiStetr34ycMVEFkOznT3iORrmYA5P4cod5RkPMgh7VwW+GGktohnuwXqj/xccnSp71mWg4FViyGnB9/AUUg==')
     block_blob_service.create_container('midiuploadrpi')	
@@ -103,9 +107,6 @@ def readInput(input_device):
     block_blob_service.create_container('jsonuploadrpi')
     block_blob_service.create_blob_from_path('jsonuploadrpi', jsonFile, jsonFile)
 
-    del keys
-    del volumes
-    del MyMIDI
 
     readInput(input_device)
 
