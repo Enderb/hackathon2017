@@ -6,7 +6,8 @@ import time
 import json
 import urllib3
 
-urllib3.disable_warnings(urllib3.exceptions.SNIMissingWarning, urllib3.exceptions.InsecurePlatformWarning) 
+urllib3.disable_warnings(urllib3.exceptions.SNIMissingWarning) 
+urllib3.disable_warnings(urllib3.exceptions.InsecurePlatformWarning)
 
 timeOffset = 0
 
@@ -25,6 +26,7 @@ def readInput(input_device):
 	
     timestr = time.strftime("%Y%m%d-%H%M%S")
     fileName = timestr + ".mid"
+    jsonFile = 'initiator.json.' + timestr
 	
     str = '{initiator":[{"name":"'
     str += timestr
@@ -87,7 +89,6 @@ def readInput(input_device):
     str = str[:-1]
     str += ']}]}'
 
-    jsonFile = 'initiator.json'
     with open(jsonFile, 'w') as outfile:
         outfile.write(str)
 
