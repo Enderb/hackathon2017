@@ -63,8 +63,7 @@ def readInput(input_device):
 				
     with open("test.midi", "wb") as output_file:
         MyMIDI.writeFile(output_file)    
-
-    del input_device    
+ 
 
 
 if __name__ == '__main__':
@@ -78,4 +77,5 @@ if __name__ == '__main__':
 	readInput(my_input)
 
 	print("goodbye")
+	del my_input
 	pygame.midi.quit()
