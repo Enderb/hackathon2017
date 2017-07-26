@@ -46,7 +46,7 @@ def readInput(input_device):
 			events = input_device.read(6)
 
 			for event in events:
-				if event[0][0] != 248:
+				if event[0][0] == 144:
 					
 				    data = event[0]
 				    timestamp = event[1] - timeOffset
