@@ -1,6 +1,7 @@
 import pygame.midi
 import sys
 from midiutil import MIDIFile
+import time
 
 def readInput(input_device):
     C = True
@@ -10,13 +11,13 @@ def readInput(input_device):
 
     track = 0
     channel = 0
-    time = 0
+    tim = 0
     tempo = 120
 	
     beatLength = 500 * 1.0 #At 120 BPM, 2 beats play per second, or, 1 beat takes 500 milliseconds 
 
     MyMIDI = MIDIFile(1, adjust_origin="True")
-#    MyMIDI.addTempo(track, time, tempo)
+    MyMIDI.addTempo(track, tim, tempo)
 
     while C:
 		
@@ -60,10 +61,14 @@ def readInput(input_device):
 					print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes[pitch], timeInBeats)
 					
 					sys.stdout.flush()
-				
-    with open("test.midi", "wb") as output_file:
+
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    fileName = timestr + ".mid"
+					
+    with open(fileName, "wb") as output_file:
         MyMIDI.writeFile(output_file)    
- 
+    del MyMIDI
+    readInput(input_device)
 
 
 if __name__ == '__main__':
