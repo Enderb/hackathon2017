@@ -1,10 +1,15 @@
+from azure.storage.blob import BlockBlobService
 import pygame.midi
 import sys
 from midiutil import MIDIFile
 import time
 
+timeOffset = 0
+
 def readInput(input_device):
     C = True
+
+    global timeOffset
 	
     keys = {}
     volumes = {}
@@ -13,6 +18,8 @@ def readInput(input_device):
     channel = 0
     tim = 0
     tempo = 120
+
+    tempOffset = 0
 	
     beatLength = 500 * 1.0 #At 120 BPM, 2 beats play per second, or, 1 beat takes 500 milliseconds 
 
@@ -29,7 +36,8 @@ def readInput(input_device):
 				if event[0][0] != 248:
 					
 				    data = event[0]
-				    timestamp = event[1]
+				    timestamp = event[1] - timeOffset
+				    tempOffset = timestamp
 				    #Notes will have type = 144
 				    #Sustain will have type = 176
 				    type = data[0]
@@ -62,12 +70,21 @@ def readInput(input_device):
 					
 					sys.stdout.flush()
 
+    timeOffset = tempOffset
+					
     timestr = time.strftime("%Y%m%d-%H%M%S")
     fileName = timestr + ".mid"
 					
     with open(fileName, "wb") as output_file:
-        MyMIDI.writeFile(output_file)    
+        MyMIDI.writeFile(output_file)
+	
+    block_blob_service = BlockBlobService(account_name='mlpiano', account_key='AWsiStetr34ycMVEFkOznT3iORrmYA5P4cod5RkPMgh7VwW+GGktohnuwXqj/xccnSp71mWg4FViyGnB9/AUUg==')    	
+    block_blob_service.create_blob_from_path('midiuploadrpi', fileName, fileName) 
+
+    del keys
+    del volumes
     del MyMIDI
+
     readInput(input_device)
 
 
