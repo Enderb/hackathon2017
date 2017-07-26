@@ -1,8 +1,6 @@
-from azure.storage.blob import BlockBlobService
 import pygame.midi
 import sys
 from midiutil import MIDIFile
-import time
 
 def readInput(input_device):
     C = True
@@ -12,13 +10,13 @@ def readInput(input_device):
 
     track = 0
     channel = 0
-    tim = 0
+    time = 0
     tempo = 120
 	
-    beatLength = 500 * 1.0 #At 120 BPM, 2 beats play per second, or, 1 beat takes 500 milliseconds 
+    beatLength = 500 #At 120 BPM, 2 beats play per second, or, 1 beat takes 500 milliseconds 
 
-    MyMIDI = MIDIFile(1, adjust_origin="True")
-    MyMIDI.addTempo(track, tim, tempo)
+    MyMIDI = MIDIFile(1, adjust_origin=True)
+    MyMIDI.addTempo(track, time, tempo)
 
     while C:
 		
@@ -53,27 +51,18 @@ def readInput(input_device):
 					sys.stdout.flush()
 
 				    elif volume == 0: #Key Up
+					print "Key %s was held down for %s" % (pitch, timestamp - keys[pitch])
 					duration = timestamp - keys[pitch]
 					
-					timeInBeats = keys[pitch]/beatLength
-					durationInBeats = duration/beatLength
-
-					MyMIDI.addNote(track, channel, pitch, timeInBeats, durationInBeats, volumes[pitch])
-					print "Added note %s duration %.3f and volume %s at time %.3f" % (pitch, durationInBeats, volumes[pitch], timeInBeats)
+					MyMIDI.addNote(track, channel, pitch, keys[pitch], duration, volumes[pitch])
+					print "Added note %s duration %s and volume %s" % (pitch, duration/beatLength, volumes[pitch])
 					
 					sys.stdout.flush()
+				
+    with open("test.midi", "wb") as output_file:
+        MyMIDI.writeFile(output_file)    
 
-
-    timestr = time.strftime("%Y%m%d-%H%M%S")
-    fileName = timestr + ".mid"
-					
-    with open(fileName, "wb") as output_file:
-        MyMIDI.writeFile(output_file)
-	
-    block_blob_service = BlockBlobService(account_name='mlpiano', account_key='AWsiStetr34ycMVEFkOznT3iORrmYA5P4cod5RkPMgh7VwW+GGktohnuwXqj/xccnSp71mWg4FViyGnB9/AUUg==')    	
-    block_blob_service.create_blob_from_path('midiuploadrpi', 'testMidi', fileName) 
-    del MyMIDI
-    readInput(input_device)
+    del input_device    
 
 
 if __name__ == '__main__':
@@ -87,5 +76,4 @@ if __name__ == '__main__':
 	readInput(my_input)
 
 	print("goodbye")
-	del my_input
 	pygame.midi.quit()
