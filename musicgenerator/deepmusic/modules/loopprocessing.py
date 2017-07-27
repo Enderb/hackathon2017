@@ -70,6 +70,7 @@ class SampleSoftmax(LoopProcessing):
             label_draws = tf.multinomial(tf.log(prev_output), 1)  # Draw 1 sample from the distribution
             label_draws = tf.squeeze(label_draws, [1])
             self.chosen_labels.append(label_draws)
+            print('tf.one_hot')
             next_input = tf.one_hot(label_draws, nb_labels)
             return next_input
         # Could use the Gumbel-Max trick to sample from a softmax distribution ?
@@ -86,6 +87,7 @@ class SampleSoftmax(LoopProcessing):
         label_draws = tf.squeeze(label_draws, [1])
         # label_draws size: [batch_size,]
         self.chosen_labels.append(label_draws)
+        print('tf.one_hot')
         next_input = tf.one_hot(label_draws, nb_labels)  # Reencode the next input vector
         # next_input size: [batch_size, nb_labels]
         return next_input
