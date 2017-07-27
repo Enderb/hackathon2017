@@ -23,6 +23,14 @@ Use python 3
 #tutorial: https://docs.microsoft.com/en-us/azure/storage/storage-python-how-to-use-blob-storage
 #pip install azure
 from azure.storage.blob import BlockBlobService
+from datetime import datetime
+
+config_file = 'mlpservice.cfg'
+
+def generate_song(timestamp):
+    with open(config_file, 'w') as outfile:
+        outfile.write(str(timestamp))
+
 if __name__ == "__main__":
     #Gets the blob service
     block_blob_service = BlockBlobService(account_name='mlpiano', account_key='AWsiStetr34ycMVEFkOznT3iORrmYA5P4cod5RkPMgh7VwW+GGktohnuwXqj/xccnSp71mWg4FViyGnB9/AUUg==')
@@ -33,10 +41,27 @@ if __name__ == "__main__":
     #This line downloads a file from blob called blobName into the file test.mid
     #block_blob_service.get_blob_to_path('midiuploadrpi', 'blobName', 'test.mid')
 
+    last_processed = datetime.utcnow()
+
+    last_processed_initialized = False
+
+    #Gets a list of blob info objects from the container midiuploadrpi
+    generator = block_blob_service.list_blobs('jsonuploadrpi')
+
+    #Iterates through blob objects and gets the corresponding file from the storage service
+    for blob in generator:
+        print(blob.name)
+        
+        string_last_processed = str(last_processed)
+        string_last_modified = str(blob.properties.last_modified)
+        print(string_last_processed)
+        print(string_last_modified)
+
+        generate_song(last_processed)
+    
     #Gets a list of blob info objects from the container midiuploadrpi
     generator = block_blob_service.list_blobs('midiuploadrpi')
 
     #Iterates through blob objects and gets the corresponding file from the storage service
     for blob in generator:
-    	print(blob.name)
-        #block_blob_service.get_blob_to_path('midiuploadrpi', blob.name, blob.name + '.mid')
+        print(blob.name)
