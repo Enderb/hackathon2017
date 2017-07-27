@@ -24,8 +24,8 @@ Use python 3
 #pip install azure
 from azure.storage.blob import BlockBlobService
 from datetime import datetime
-
-config_file = 'mlpservice.cfg'
+import os
+import time
 
 def generate_song(timestamp):
     with open(config_file, 'w') as outfile:
@@ -40,31 +40,53 @@ if __name__ == "__main__":
 
     #This line downloads a file from blob called blobName into the file test.mid
     #block_blob_service.get_blob_to_path('midiuploadrpi', 'blobName', 'test.mid')
-
-    last_processed = datetime.utcnow()
-
-    last_processed_initialized = False
-
+    #block_blob_service.create_container('jsonuploadrpiused')
+    #block_blob_service.create_container('midiuploadrpiused')
+    #last_processed = datetime.utcnow()
     #Gets a list of blob info objects from the container midiuploadrpi
-    generator = block_blob_service.list_blobs('jsonuploadrpi')
+    #cmd = "wmplayer.exe \"C:\\Users\\frcheng\\Documents\\Hackathon2017\\Hackathon2017\\musicgenerator\\save\\model\\midi\""
 
-    #Iterates through blob objects and gets the corresponding file from the storage service
-    for blob in generator:
-        print(blob.name)
-        
-        string_last_processed = str(last_processed)
-        string_last_modified = str(blob.properties.last_modified)
-        #lp = datetime.strptime(string_last_processed, '%Y-%m-%d %H:%M:%S.%f')
-        #lm = datetime.strptime(string_last_modified, '%Y-%m-%d %H:%M:%S+%z')
-        #print(lp)
-        #print(lm)
+    mlpLabel = "MACHINE LEARNING PIANO: "
 
-        generate_song(last_processed)
+    while True:
+        song_generated = False
+        #Iterates through blob objects and gets the corresponding file from the storage service
+        generator = block_blob_service.list_blobs('jsonuploadrpi')
+        for blob in generator:
+            if song_generated == False:
+                print(mlpLabel, "BEGIN")
+                print(mlpLabel, "Welcome to Machine Learning Piano")
+                initiator_name = blob.name[15:]
+
+                print(mlpLabel, "LOAD SEQUENCE INITIATOR " + initiator_name)
+                block_blob_service.get_blob_to_path('jsonuploadrpi', blob.name, 'data\\test\\initiator.json')
+                
+                print(mlpLabel, "GENERATE CONTENT")
+                os.system("python main.py --test --sample_length 500")
+                
+                print(mlpLabel, "PLAYBACK")
+                filepath = "\"C:\\Users\\frcheng\\Documents\\Hackathon2017\\Hackathon2017\\musicgenerator\\save\\model\\midi\\"
+                prefix = "model-"
+                suffix = "-0.mid\""
+                cmd = "playmidi.bat " + filepath + prefix + initiator_name + suffix
+                os.system(cmd)
+                
+                print(mlpLabel, "Thank you for playing!")
+                print(mlpLabel, "END")
+                block_blob_service.create_blob_from_path('jsonuploadrpiused', blob.name, 'data\\test\\initiator.json')
+                block_blob_service.delete_blob("jsonuploadrpi",blob.name)
+                song_generated = True
+
+        time.sleep(1)
+            #archive = block_blob_service.list_blobs('jsonuploadrpiused')
+            #for entry in archive:
+                #print(entry.name)
+            #generate_song(last_processed)
     
     #Gets a list of blob info objects from the container midiuploadrpi
-    generator = block_blob_service.list_blobs('midiuploadrpi')
+    #generator = block_blob_service.list_blobs('midiuploadrpi')
 
     #Iterates through blob objects and gets the corresponding file from the storage service
-    for blob in generator:
-        print(blob.name)
-        block_blob_service.get_blob_to_path('midiuploadrpi', blob.name, blob.name)
+    #for blob in generator:
+        #print(blob.name)
+        #block_blob_service.get_blob_to_path('midiuploadrpi', blob.name, blob.name)
