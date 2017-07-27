@@ -54,8 +54,10 @@ if __name__ == "__main__":
         
         string_last_processed = str(last_processed)
         string_last_modified = str(blob.properties.last_modified)
-        print(string_last_processed)
-        print(string_last_modified)
+        #lp = datetime.strptime(string_last_processed, '%Y-%m-%d %H:%M:%S.%f')
+        #lm = datetime.strptime(string_last_modified, '%Y-%m-%d %H:%M:%S+%z')
+        #print(lp)
+        #print(lm)
 
         generate_song(last_processed)
     
@@ -65,3 +67,4 @@ if __name__ == "__main__":
     #Iterates through blob objects and gets the corresponding file from the storage service
     for blob in generator:
         print(blob.name)
+        block_blob_service.get_blob_to_path('midiuploadrpi', blob.name, blob.name)
