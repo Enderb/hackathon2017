@@ -159,4 +159,3 @@ class Embedding(EncoderNetwork):
         """
         # TODO:
         return
-

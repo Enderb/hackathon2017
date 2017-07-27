@@ -125,7 +125,6 @@ class BatchBuilder:
         """ Reconstruct the original raw song from the preprocessed data
         We should have:
             reconstruct_song(process_song(my_song)) == my_song
-
         Args:
             song (Object): the training/testing set
         Return:
@@ -325,7 +324,6 @@ class Relative(BatchBuilder):
     def reconstruct_song(self, rel_song):
         """ Reconstruct the original raw song from the preprocessed data
         See parent class for details
-
         Some information will be lost compare to the original song:
             * Only one track left
             * Original tempo lost
@@ -565,7 +563,6 @@ class PianoRoll(BatchBuilder):
         """ Return the batches which initiate the RNN when generating
         The initial batches are loaded from a json file containing the first notes of the song. The note values
         are the standard midi ones. Here is an examples of an initiator file:
-
         ```
         {"initiator":[
             {"name":"Simple_C4",
@@ -580,7 +577,6 @@ class PianoRoll(BatchBuilder):
             ]}
         ]}
         ```
-
         Return:
             List[Batch], List[str]: The generated batches with the associated names
         """
