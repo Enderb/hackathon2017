@@ -19,14 +19,14 @@ Platform assembly: C:\Users\frcheng\Documents\Unity\FunSim\New Unity Project\Pia
 Loading C:\Users\frcheng\Documents\Unity\FunSim\New Unity Project\PianoVisualizer_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
 Platform assembly: C:\Users\frcheng\Documents\Unity\FunSim\New Unity Project\PianoVisualizer_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading C:\Users\frcheng\Documents\Unity\FunSim\New Unity Project\PianoVisualizer_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.069 seconds
+- Completed reload, in  0.153 seconds
 Platform assembly: C:\Users\frcheng\Documents\Unity\FunSim\New Unity Project\PianoVisualizer_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\frcheng\Documents\Unity\FunSim\New Unity Project\PianoVisualizer_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 2.175463 ms
+UnloadTime: 1.412823 ms
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 4674 -> priority: 1 
-  Thread -> id: 5604 -> priority: 1 
+  Thread -> id: 3994 -> priority: 1 
+  Thread -> id: 31b8 -> priority: 1 
